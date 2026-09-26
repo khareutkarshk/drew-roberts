@@ -1,0 +1,233 @@
+/* Scroll timeline chapters */
+
+.timeline {
+	position: relative;
+	width: 100%;
+	overflow-x: clip;
+}
+
+.chapter {
+	position: relative;
+	width: 100%;
+	min-height: 100svh;
+	isolation: isolate;
+}
+
+.chapter--home {
+	z-index: 2;
+	min-height: 100svh;
+	height: 100svh;
+	overflow: hidden;
+}
+
+.chapter--archive {
+	z-index: 1;
+	background: var(--bg);
+}
+
+.chapter__panel {
+	width: 100%;
+	transform-origin: 50% 30%;
+}
+
+.chapter--home .chapter__panel {
+	height: 100%;
+	will-change: transform, opacity, filter;
+}
+
+.timeline > .site-nav--overlay,
+.timeline > .site-nav--overlay a,
+.timeline > .site-nav--overlay button {
+	transition:
+		color 0.25s ease,
+		background-color 0.25s ease,
+		border-color 0.25s ease;
+}
+
+.is-revealing {
+	transition: none !important;
+}
+
+/* ---------- Chapter gates: cards that slide over the next chapter ---------- */
+
+.chapter-gate {
+	position: relative;
+	z-index: 3;
+	height: 100svh;
+	overflow: hidden;
+	pointer-events: none;
+	--gate-band: var(--accent);
+	--gate-band-ink: var(--accent-ink);
+	--gate-word: var(--ink);
+}
+
+.chapter-gate[data-tone="paper"] {
+	--gate-band: var(--paper);
+}
+
+.chapter-gate[data-tone="metal"] {
+	--gate-band: var(--metal);
+	--gate-band-ink: var(--accent);
+	--gate-word: var(--paper);
+}
+
+.chapter-gate__panel {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	grid-template-rows: 1fr auto;
+	overflow: hidden;
+	background:
+		radial-gradient(ellipse 70% 60% at 85% 20%, rgba(183, 255, 60, 0.06), transparent 60%),
+		#11110d;
+	clip-path: inset(0% 0% 0% 100%);
+}
+
+.chapter-gate__mark {
+	position: absolute;
+	top: calc(var(--nav-h) + 0.5rem);
+	right: var(--pad-x);
+	font-family: var(--font-display);
+	font-size: clamp(7rem, 26vw, 22rem);
+	font-weight: 800;
+	line-height: 0.8;
+	letter-spacing: -0.06em;
+	color: transparent;
+	-webkit-text-stroke: 1px rgba(183, 255, 60, 0.35);
+}
+
+.chapter-gate__copy {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	align-content: end;
+	gap: clamp(0.75rem, 2vh, 1.25rem);
+	padding: calc(var(--nav-h) + 2rem) var(--pad-x) clamp(1.5rem, 5vh, 3rem);
+}
+
+.chapter-gate__index,
+.chapter-gate__sub,
+.chapter-gate__cue {
+	font-family: var(--font-mono);
+	font-size: var(--text-mono-ui);
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
+.chapter-gate__index {
+	color: var(--accent);
+}
+
+.chapter-gate__title {
+	display: block;
+	font-family: var(--font-display);
+	font-size: clamp(4.25rem, 17vw, 15rem);
+	font-weight: 800;
+	line-height: 0.82;
+	letter-spacing: -0.045em;
+	text-transform: uppercase;
+	color: var(--gate-word);
+	will-change: transform;
+}
+
+.chapter-gate__band {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	min-height: clamp(4rem, 13vh, 7rem);
+	padding: 0 var(--pad-x);
+	color: var(--gate-band-ink);
+	background: var(--gate-band);
+}
+
+.chapter-gate[data-tone="metal"] .chapter-gate__band {
+	border-top: 2px solid var(--accent);
+}
+
+@media (max-width: 639px) {
+	.chapter-gate__title {
+		font-size: clamp(3.4rem, 19vw, 5.5rem);
+	}
+
+	.chapter-gate__cue {
+		display: none;
+	}
+}
+
+/* ---------- Top nav: chapter index, current chapter, scroll progress ---------- */
+
+.site-nav__index {
+	margin-right: 0.4em;
+	font-size: 0.85em;
+	color: var(--accent);
+	opacity: 0.55;
+	transition: opacity 0.25s ease;
+}
+
+.site-nav__links a[aria-current="page"] .site-nav__index,
+.site-nav__links a:hover .site-nav__index {
+	opacity: 1;
+}
+
+.site-nav__now {
+	display: none;
+	align-items: baseline;
+	gap: 0.5em;
+	margin: 0 0 0 auto;
+	font-family: var(--font-mono);
+	font-size: var(--text-mono-ui);
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.site-nav__now-index {
+	color: var(--accent);
+}
+
+.site-nav__now-label {
+	color: var(--ink);
+}
+
+.site-nav__progress {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 2px;
+	overflow: hidden;
+	background: rgba(241, 240, 232, 0.06);
+	pointer-events: none;
+}
+
+.site-nav__progress-fill {
+	display: block;
+	height: 100%;
+	background: var(--accent);
+	transform: scaleX(0);
+	transform-origin: left center;
+}
+
+@media (max-width: 639px) {
+	.site-nav__now {
+		display: inline-flex;
+	}
+
+	body.nav-open .site-nav__now,
+	body.nav-open .site-nav__progress {
+		visibility: hidden;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.chapter__panel {
+		will-change: auto;
+		transform: none !important;
+		filter: none !important;
+		opacity: 1 !important;
+	}
+
+	.chapter-gate {
+		display: none;
+	}
+}

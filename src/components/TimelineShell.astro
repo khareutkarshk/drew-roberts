@@ -1,0 +1,110 @@
+---
+import "../styles/timeline.css";
+import "../styles/chapters.css";
+import SiteNav from "./SiteNav.astro";
+import SiteFooter from "./SiteFooter.astro";
+import Hero from "./Hero.astro";
+import ChapterWork from "./chapters/ChapterWork.astro";
+import ChapterMedia from "./chapters/ChapterMedia.astro";
+import ChapterAbout from "./chapters/ChapterAbout.astro";
+import ChapterContact from "./chapters/ChapterContact.astro";
+import ChapterGate from "./ChapterGate.astro";
+import type { ChapterId } from "../data/chapters";
+
+interface Props {
+	initialChapter?: ChapterId;
+}
+
+const { initialChapter = "home" } = Astro.props;
+---
+
+<div class="timeline" data-timeline data-initial-chapter={initialChapter}>
+	<SiteNav overlay timeline />
+
+	<section
+		class="chapter chapter--home"
+		id="home"
+		data-chapter="home"
+		data-seam="accent"
+		aria-label="Home — interactive bench"
+	>
+		<div class="chapter__panel" data-chapter-panel>
+			<Hero />
+		</div>
+	</section>
+
+	<ChapterGate chapter="work" index="02" title="Work" sub="Specimens from the bench" tone="accent" />
+
+	<section
+		class="chapter chapter--archive"
+		id="work"
+		data-chapter="work"
+		data-seam="accent"
+		aria-label="Work — Specimens"
+	>
+		<div class="chapter__panel archive chapter__archive" data-chapter-panel>
+			<main class="archive__main">
+				<ChapterWork />
+			</main>
+		</div>
+	</section>
+
+	<ChapterGate chapter="media" index="03" title="Media" sub="Saturday Down South" tone="paper" />
+
+	<section
+		class="chapter chapter--archive"
+		id="media"
+		data-chapter="media"
+		data-seam="paper"
+		aria-label="Media — Saturday Down South"
+	>
+		<div class="chapter__panel archive chapter__archive" data-chapter-panel>
+			<main class="archive__main">
+				<ChapterMedia />
+			</main>
+		</div>
+	</section>
+
+	<ChapterGate chapter="about" index="04" title="About" sub="Digital Craftsman" tone="accent" />
+
+	<section
+		class="chapter chapter--archive"
+		id="about"
+		data-chapter="about"
+		data-seam="dim"
+		aria-label="About — Digital Craftsman"
+	>
+		<div class="chapter__panel archive chapter__archive" data-chapter-panel>
+			<main class="archive__main">
+				<ChapterAbout />
+			</main>
+		</div>
+	</section>
+
+	<ChapterGate chapter="contact" index="05" title="Contact" sub="Book a call" tone="paper" />
+
+	<section
+		class="chapter chapter--archive chapter--last"
+		id="contact"
+		data-chapter="contact"
+		data-seam="metal"
+		aria-label="Contact — Book a call"
+	>
+		<div class="chapter__panel archive chapter__archive" data-chapter-panel>
+			<main class="archive__main">
+				<ChapterContact />
+			</main>
+			<SiteFooter />
+		</div>
+	</section>
+</div>
+
+<script>
+	import { mountTimeline } from "../scripts/timeline/index";
+
+	const root = document.querySelector<HTMLElement>("[data-timeline]");
+	if (root) {
+		const timeline = mountTimeline(root);
+		document.addEventListener("astro:before-swap", () => timeline.destroy(), { once: true });
+	}
+</script>

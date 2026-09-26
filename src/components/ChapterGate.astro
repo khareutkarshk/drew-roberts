@@ -1,0 +1,27 @@
+---
+interface Props {
+	chapter: string;
+	index: string;
+	title: string;
+	sub: string;
+	tone: "accent" | "paper" | "metal";
+}
+
+const { chapter, index, title, sub, tone } = Astro.props;
+---
+
+<div class="chapter-gate" data-gate={chapter} data-tone={tone} aria-hidden="true">
+	<div class="chapter-gate__panel" data-gate-panel>
+		<span class="chapter-gate__mark" data-gate-mark>{index}</span>
+
+		<div class="chapter-gate__copy">
+			<span class="chapter-gate__index" data-gate-index>{index} / 05</span>
+			<span class="chapter-gate__title" data-gate-title>{title}</span>
+		</div>
+
+		<div class="chapter-gate__band" data-gate-band>
+			<span class="chapter-gate__sub">{sub}</span>
+			<span class="chapter-gate__cue">Keep scrolling ↓</span>
+		</div>
+	</div>
+</div>

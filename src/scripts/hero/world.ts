@@ -66,6 +66,8 @@ export class HeroWorld {
 	private accumulator = 0;
 	private frame = 0;
 	private visible = true;
+	/** Timeline chapter left home — keep Matter stopped even if IO still sees the pin. */
+	private pausedByTimeline = false;
 	private destroyed = false;
 	private resetting = false;
 	private cleanups: Array<() => void> = [];
@@ -332,14 +334,14 @@ export class HeroWorld {
 		const io = new IntersectionObserver(
 			([entry]) => {
 				this.visible = entry?.isIntersecting ?? true;
-				this.visible && !document.hidden ? this.start() : this.stop();
+				!this.pausedByTimeline && this.visible && !document.hidden ? this.start() : this.stop();
 			},
 			{ threshold: 0.02 },
 		);
 		io.observe(this.root);
 
 		this.listen(document, "visibilitychange", () => {
-			document.hidden || !this.visible ? this.stop() : this.start();
+			document.hidden || !this.visible || this.pausedByTimeline ? this.stop() : this.start();
 		});
 
 		this.cleanups.push(() => {
@@ -417,6 +419,19 @@ export class HeroWorld {
 	private stop(): void {
 		cancelAnimationFrame(this.rafId);
 		this.rafId = 0;
+	}
+
+	/** Pause the Matter loop while the hero chapter is off-screen. */
+	pause(): void {
+		this.pausedByTimeline = true;
+		this.stop();
+	}
+
+	/** Resume the Matter loop when returning to the hero chapter. */
+	resume(): void {
+		if (this.destroyed || this.reducedMotion) return;
+		this.pausedByTimeline = false;
+		if (this.visible && !document.hidden) this.start();
 	}
 
 	/** Fixed timestep so a 120Hz display doesn't run the world at double speed. */

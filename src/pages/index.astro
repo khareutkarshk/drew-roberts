@@ -1,11 +1,9 @@
 ---
-import Hero from "../components/Hero.astro";
-import SiteNav from "../components/SiteNav.astro";
 import Layout from "../layouts/Layout.astro";
+import TimelineShell from "../components/TimelineShell.astro";
 import { seo } from "../data/site";
 ---
 
-<Layout home title={seo.titleDefault} description={seo.descriptionDefault} ogType="profile">
-	<SiteNav overlay />
-	<Hero />
+<Layout timeline title={seo.titleDefault} description={seo.descriptionDefault} ogType="profile">
+	<TimelineShell initialChapter="home" />
 </Layout>

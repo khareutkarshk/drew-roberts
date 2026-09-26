@@ -789,24 +789,17 @@
 	}
 
 	.hero__brief {
-		font-size: 9px;
-	}
-
-	.hero__brief-title {
-		margin-bottom: 0.55rem;
-		padding-bottom: 0.4rem;
-	}
-
-	.hero__brief-list {
-		gap: 0.22rem;
-	}
-
-	.hero__brief-list li {
-		grid-template-columns: 2em 6.2em auto;
+		font-size: var(--text-mono-ui);
 	}
 
 	.hero__brief-note {
-		display: none;
+		display: block;
+		opacity: 0.7;
+	}
+
+	.hero__brief-list li {
+		grid-template-columns: 2em minmax(5.5em, auto) minmax(0, 1fr);
+		gap: 0.35rem;
 	}
 
 	.hero__meta,
@@ -846,10 +839,14 @@
 		display: none;
 	}
 
+	.hero__meta {
+		font-size: var(--text-mono-ui);
+	}
+
 	.hero__mobile-meta {
 		display: block;
 		font-family: var(--font-mono);
-		font-size: 11px;
+		font-size: var(--text-mono-ui);
 		letter-spacing: 0.1em;
 		line-height: 1.6;
 		text-transform: uppercase;

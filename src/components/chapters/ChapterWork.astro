@@ -1,0 +1,102 @@
+---
+import { specimens } from "../../data/specimens";
+import { brand, cta } from "../../data/site";
+
+const chainPieces = [
+	{ id: "eth", label: "Ξ", kind: "glyph", tone: "accent" },
+	{ id: "evm", label: "EVM", kind: "tag" },
+	{ id: "sol", label: "Solidity", kind: "tag" },
+	{ id: "erc", label: "ERC-20", kind: "tag", tone: "light" },
+	{ id: "ens", label: "ENS", kind: "tag" },
+	{ id: "oss", label: "Open Source", kind: "tag" },
+];
+---
+
+<header class="work-hero">
+	<div class="work-hero__head">
+		<p class="archive__eyebrow"><span class="archive__mark" aria-hidden="true"></span>Archive / Work</p>
+		<h2 class="archive__title work-hero__title">Specimens</h2>
+	</div>
+
+	<div class="work-hero__meta">
+		<p class="work-hero__count">
+			<span class="work-hero__num">{String(specimens.length).padStart(2, "0")}</span>
+			<span class="work-hero__unit">Public packages<br />& standards</span>
+		</p>
+		<p class="archive__lede work-hero__lede">
+			Public packages and standards from the bench — the kind of software a craftsperson ships for
+			clients and collaborators alike.
+		</p>
+		<p class="work-hero__hint">
+			<a href={cta.bookHref}>{cta.bookLabel}</a>
+			<span aria-hidden="true"> · </span>
+			{brand.availability}
+		</p>
+	</div>
+
+	<div
+		class="chain-bench"
+		data-accent
+		data-accent-mode="play"
+		aria-label="Interactive blockchain tags. Drag them."
+	>
+		<div class="chain-bench__rail" aria-hidden="true">
+			<span>Chain shelf</span>
+			<span>01 — Web3</span>
+		</div>
+		{
+			chainPieces.map((piece) =>
+				piece.kind === "glyph" ? (
+					<div
+						class:list={["accent-body", "chain-glyph", { "chain-glyph--accent": piece.tone === "accent" }]}
+						data-accent-body={piece.id}
+					>
+						{piece.label}
+					</div>
+				) : (
+					<div
+						class:list={[
+							"accent-body",
+							"accent-tag",
+							piece.tone === "light" && "accent-tag--light",
+							piece.tone === "accent" && "accent-tag--accent",
+						]}
+						data-accent-body={piece.id}
+					>
+						<span class="accent-tag__hole" />
+						{piece.label}
+					</div>
+				),
+			)
+		}
+	</div>
+</header>
+
+<div class="specimen-grid" data-specimen-grid>
+	{
+		specimens.map((item, i) => (
+			<a
+				class:list={["specimen", { "specimen--quiet": item.quiet, "specimen--featured": i === 0 }]}
+				href={item.href}
+				target="_blank"
+				rel="noopener noreferrer"
+				data-specimen
+			>
+				<span class="specimen__shine" aria-hidden="true" />
+				<span class="specimen__index">
+					{item.index} / {String(specimens.length).padStart(2, "0")}
+				</span>
+				<h3 class="specimen__title">{item.title}</h3>
+				<p class="specimen__blurb">{item.blurb}</p>
+				<div class="specimen__meta">
+					{item.tags.map((tag) => (
+						<span class="specimen__tag">{tag}</span>
+					))}
+				</div>
+				<span class="specimen__go">
+					View on GitHub <span aria-hidden="true">↗</span>
+				</span>
+			</a>
+		))
+	}
+</div>

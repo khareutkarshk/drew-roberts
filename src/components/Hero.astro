@@ -208,12 +208,3 @@ const links = [
 	<div class="hero__grain" aria-hidden="true"></div>
 </section>
 
-<script>
-	import { mountHero } from "../scripts/hero/world";
-
-	const hero = document.getElementById("hero");
-	if (hero) {
-		const world = mountHero(hero);
-		document.addEventListener("astro:before-swap", () => world.destroy(), { once: true });
-	}
-</script>

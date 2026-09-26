@@ -22,9 +22,10 @@ body {
 	text-rendering: optimizeLegibility;
 }
 
-body.is-home {
-	overflow: hidden;
-	height: 100svh;
+body.is-timeline {
+	overflow-x: clip;
+	overflow-y: auto;
+	min-height: 100svh;
 }
 
 a {
@@ -48,7 +49,7 @@ img {
 	min-height: var(--nav-h);
 	padding: 0.85rem var(--pad-x);
 	font-family: var(--font-mono);
-	font-size: 11px;
+	font-size: var(--text-mono-ui);
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
 }
@@ -59,6 +60,14 @@ img {
 	z-index: 40;
 	pointer-events: none;
 	background: linear-gradient(to bottom, rgba(11, 11, 9, 0.92) 40%, transparent);
+}
+
+.timeline > .site-nav--overlay {
+	position: fixed;
+	inset: 0 0 auto;
+	width: 100%;
+	z-index: 55;
+	background: linear-gradient(to bottom, rgba(11, 11, 9, 0.94) 55%, transparent);
 }
 
 .site-nav--overlay a,
@@ -198,7 +207,7 @@ img {
 	margin: 0 0 1rem;
 	max-width: 14ch;
 	font-family: var(--font-display);
-	font-size: clamp(2.4rem, 6vw, 4.6rem);
+	font-size: var(--text-display);
 	font-weight: 700;
 	letter-spacing: -0.02em;
 	line-height: 0.95;
@@ -208,7 +217,7 @@ img {
 .archive__lede {
 	margin: 0 0 clamp(2.5rem, 6vh, 3.75rem);
 	max-width: 42ch;
-	font-size: clamp(1rem, 1.5vw, 1.15rem);
+	font-size: var(--text-lede);
 	line-height: 1.55;
 	color: var(--muted);
 }
@@ -848,7 +857,7 @@ img {
 .guide__blurb {
 	margin: 0;
 	max-width: 34rem;
-	font-size: 0.98rem;
+	font-size: var(--text-body);
 	line-height: 1.55;
 	color: var(--muted);
 }
@@ -867,7 +876,7 @@ img {
 	position: relative;
 	padding-left: 0.95rem;
 	font-family: var(--font-mono);
-	font-size: 11px;
+	font-size: max(12px, var(--text-mono-ui));
 	letter-spacing: 0.04em;
 	line-height: 1.55;
 	color: var(--ink);
@@ -1086,7 +1095,7 @@ img {
 .specimen__blurb {
 	margin: 0;
 	flex: 1;
-	font-size: 0.95rem;
+	font-size: max(0.95rem, var(--text-body));
 	line-height: 1.5;
 	color: var(--muted);
 }

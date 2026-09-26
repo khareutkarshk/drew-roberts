@@ -1,16 +1,15 @@
 ---
 import "../styles/site.css";
-import SiteNav from "../components/SiteNav.astro";
-import SiteFooter from "../components/SiteFooter.astro";
 import { brand, seo, voice } from "../data/site";
 
 interface Props {
 	title?: string;
 	description?: string;
+	/** Full-page scroll timeline shell (home + room deep-links). */
+	timeline?: boolean;
+	/** @deprecated use timeline */
 	home?: boolean;
-	/** Override Open Graph type; defaults to website */
 	ogType?: "website" | "profile";
-	/** Optional path-relative image override */
 	image?: string;
 	noindex?: boolean;
 }
@@ -18,11 +17,14 @@ interface Props {
 const {
 	title = seo.titleDefault,
 	description = seo.descriptionDefault,
+	timeline = false,
 	home = false,
 	ogType = "website",
 	image = seo.ogImage,
 	noindex = false,
 } = Astro.props;
+
+const isTimeline = timeline || home;
 
 const fullTitle =
 	title === brand.name || title === seo.titleDefault
@@ -120,14 +122,12 @@ const jsonLd = {
 		<meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
 		<link rel="canonical" href={canonicalURL.href} />
 
-		{/* Icons — photo-based */}
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 
-		{/* Open Graph */}
 		<meta property="og:type" content={ogType} />
 		<meta property="og:site_name" content={brand.name} />
 		<meta property="og:locale" content={brand.locale} />
@@ -144,7 +144,6 @@ const jsonLd = {
 		{ogType === "profile" && <meta property="profile:last_name" content="Roberts" />}
 		{ogType === "profile" && <meta property="profile:username" content="drewroberts" />}
 
-		{/* Twitter / X */}
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:site" content={seo.twitter} />
 		<meta name="twitter:creator" content={seo.twitter} />
@@ -153,7 +152,6 @@ const jsonLd = {
 		<meta name="twitter:image" content={ogImageURL} />
 		<meta name="twitter:image:alt" content={`${brand.name} — ${brand.tagline}`} />
 
-		{/* Performance */}
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 		<link
@@ -163,19 +161,7 @@ const jsonLd = {
 
 		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
-	<body class:list={[{ "is-home": home }]}>
-		{
-			home ? (
-				<slot />
-			) : (
-				<div class="archive">
-					<SiteNav />
-					<main class="archive__main">
-						<slot />
-					</main>
-					<SiteFooter />
-				</div>
-			)
-		}
+	<body class:list={[{ "is-timeline": isTimeline }]}>
+		<slot />
 	</body>
 </html>

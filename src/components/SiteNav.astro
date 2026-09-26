@@ -1,21 +1,31 @@
 ---
 interface Props {
 	overlay?: boolean;
+	timeline?: boolean;
 }
 
-const { overlay = false } = Astro.props;
+const { overlay = false, timeline = false } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
 
 const links = [
-	{ href: "/work", label: "Work" },
-	{ href: "/media", label: "Media" },
-	{ href: "/about", label: "About" },
-	{ href: "/contact", label: "Contact" },
+	{ href: "/work", label: "Work", chapter: "work", index: "02" },
+	{ href: "/media", label: "Media", chapter: "media", index: "03" },
+	{ href: "/about", label: "About", chapter: "about", index: "04" },
+	{ href: "/contact", label: "Contact", chapter: "contact", index: "05" },
 ];
 ---
 
 <nav class:list={["site-nav", { "site-nav--overlay": overlay }]} aria-label="Primary">
-	<a class="site-nav__brand" href="/">Drew Roberts</a>
+	<a class="site-nav__brand" href="/" data-chapter-link={timeline ? "home" : undefined}>Drew Roberts</a>
+
+	{
+		timeline && (
+			<p class="site-nav__now" aria-hidden="true">
+				<span class="site-nav__now-index" data-nav-now-index>01</span>
+				<span class="site-nav__now-label" data-nav-now-label>Home</span>
+			</p>
+		)
+	}
 
 	<button
 		type="button"
@@ -31,13 +41,26 @@ const links = [
 		{
 			links.map((link) => (
 				<li>
-					<a href={link.href} aria-current={path === link.href ? "page" : undefined}>
+					<a
+						href={link.href}
+						data-chapter-link={timeline ? link.chapter : undefined}
+						aria-current={path === link.href ? "page" : undefined}
+					>
+						<span class="site-nav__index" aria-hidden="true">{link.index}</span>
 						{link.label}
 					</a>
 				</li>
 			))
 		}
 	</ul>
+
+	{
+		timeline && (
+			<span class="site-nav__progress" aria-hidden="true">
+				<span class="site-nav__progress-fill" data-nav-progress />
+			</span>
+		)
+	}
 </nav>
 
 <script>

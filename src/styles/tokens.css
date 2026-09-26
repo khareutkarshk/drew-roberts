@@ -14,9 +14,24 @@
 	--font-sans: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+	--text-display: clamp(2.4rem, 6vw, 4.6rem);
+	--text-lede: clamp(1.05rem, 1.5vw, 1.2rem);
+	--text-body: 1.05rem;
+	--text-mono-ui: 12px;
+
 	--pad-x: clamp(1.1rem, 2.6vw, 2.25rem);
 	--pad-y: clamp(1rem, 2.2vw, 1.9rem);
 	--max: 72rem;
 
 	--nav-h: 3.5rem;
+}
+
+@media (max-width: 639px) {
+	:root {
+		--text-display: clamp(2.1rem, 9vw, 2.75rem);
+		--text-lede: clamp(1.05rem, 3.8vw, 1.2rem);
+		--text-body: 1rem;
+		--text-mono-ui: 13px;
+		--pad-x: clamp(1rem, 4.5vw, 1.35rem);
+	}
 }
