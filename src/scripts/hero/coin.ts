@@ -54,12 +54,12 @@ export function preloadCoin(): Promise<void> {
 function coinSize(m: StageMetrics): number {
 	const byWidth =
 		m.width < 640
-			? clamp(m.width * 0.42, 170, 220)
+			? clamp(m.width * 0.34, 140, 176)
 			: m.width < 1024
 				? clamp(m.width * 0.28, 220, 280)
 				: clamp(m.width * 0.22, 260, 340);
 	// Short viewports: leave room above the bench so the coin never crowds the header
-	return Math.round(Math.min(byWidth, Math.max(150, m.benchY * 0.46)));
+	return Math.round(Math.min(byWidth, Math.max(130, m.benchY * 0.4)));
 }
 
 export class Coin {

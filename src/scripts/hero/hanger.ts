@@ -22,13 +22,21 @@ export class Hanger {
 	create(world: Matter.World, m: StageMetrics): void {
 		this.el.style.width = "";
 		this.el.style.height = "";
+		if (getComputedStyle(this.el).display === "none") {
+			this.w = this.h = 0;
+			this.rope.setAttribute("x1", "0");
+			this.rope.setAttribute("y1", "0");
+			this.rope.setAttribute("x2", "0");
+			this.rope.setAttribute("y2", "0");
+			return;
+		}
 		this.w = this.el.offsetWidth;
 		this.h = this.el.offsetHeight;
 		this.el.style.width = `${this.w}px`;
 		this.el.style.height = `${this.h}px`;
 
-		this.anchor = { x: m.width * (m.compact ? 0.8 : 0.61), y: -4 };
-		this.length = m.benchY * (m.compact ? 0.06 : 0.17);
+		this.anchor = { x: m.width * (m.compact ? 0.58 : 0.61), y: -4 };
+		this.length = m.benchY * (m.compact ? 0.14 : 0.17);
 
 		const body = Bodies.rectangle(
 			this.anchor.x,
