@@ -58,14 +58,15 @@ const MATERIAL: Record<Kind, Matter.IChamferableBodyDefinition & { massFor: (w: 
 		chamfer: { radius: 4 },
 		massFor: () => 0.6,
 	},
-	// Card stock: almost no bounce, catches the air
+	// Card stock: heavy enough to sit still under a dropped coin, zero bounce
 	ticket: {
-		friction: 0.7,
-		frictionStatic: 0.9,
-		restitution: 0.04,
-		frictionAir: 0.045,
+		friction: 0.85,
+		frictionStatic: 1.2,
+		restitution: 0,
+		frictionAir: 0.06,
 		chamfer: { radius: 3 },
-		massFor: () => 0.35,
+		massFor: () => 1.4,
+		sleepThreshold: 25,
 	},
 };
 
@@ -243,13 +244,16 @@ export class Artifacts {
 			y -= b.h + 0.5;
 		}
 
-		// Phones have no spare floor: the ticket lies flat under where the coin lands,
-		// and the tags rest on top of the type.
+		// Phones have no spare floor: park the ticket beside the coin landing,
+		// never under it — stacking the heavy coin on card stock jitters forever.
 		if (m.compact) {
 			const ticket = loose.find((b) => b.kind === "ticket");
 			if (ticket) {
-				const x = clamp(m.width * COMPACT_COIN_X, ticket.w / 2 + 4, stackLeft - ticket.w / 2 - 4);
-				ticket.home = { x, y: m.benchY - ticket.h / 2 - 0.5, angle: 0 };
+				const coinX = m.width * COMPACT_COIN_X;
+				const coinClear = m.width * 0.22;
+				const beside = coinX + coinClear + ticket.w / 2;
+				const x = clamp(beside, ticket.w / 2 + 6, Math.min(stackLeft - ticket.w / 2 - 6, m.width - ticket.w / 2 - 6));
+				ticket.home = { x, y: m.benchY - ticket.h / 2 - 0.5, angle: -0.04 };
 				loose.splice(loose.indexOf(ticket), 1);
 			}
 		}
@@ -281,10 +285,10 @@ export class Artifacts {
 	private makeBody(kind: Kind, pose: Pose, w: number, h: number, label: string): Matter.Body {
 		const { massFor, ...material } = MATERIAL[kind];
 		const body = Bodies.rectangle(pose.x, pose.y, w, h, {
+			sleepThreshold: 40,
 			...material,
 			angle: pose.angle,
 			label,
-			sleepThreshold: 40,
 			collisionFilter: COLLIDES,
 		});
 		Body.setMass(body, massFor(w, h));

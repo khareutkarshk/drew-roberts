@@ -89,11 +89,11 @@ export class Coin {
 
 		const body = Bodies.circle(x, y, radius, {
 			label: "coin",
-			restitution: 0.5,
-			friction: 0.48,
-			frictionStatic: 0.6,
-			frictionAir: 0.018,
-			sleepThreshold: 45,
+			restitution: 0.28,
+			friction: 0.55,
+			frictionStatic: 0.85,
+			frictionAir: 0.024,
+			sleepThreshold: 28,
 			collisionFilter: {
 				category: CATEGORY.coin,
 				mask: CATEGORY.wall | CATEGORY.artifact | CATEGORY.mouse,
