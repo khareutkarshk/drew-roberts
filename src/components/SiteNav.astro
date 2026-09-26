@@ -44,10 +44,23 @@ const links = [
 	const nav = document.querySelector(".site-nav");
 	const toggle = document.querySelector("[data-nav-toggle]");
 	if (nav && toggle instanceof HTMLButtonElement) {
-		toggle.addEventListener("click", () => {
-			const open = nav.classList.toggle("is-open");
+		const setOpen = (open: boolean) => {
+			nav.classList.toggle("is-open", open);
 			toggle.setAttribute("aria-expanded", String(open));
 			toggle.textContent = open ? "Close" : "Menu";
+			document.body.classList.toggle("nav-open", open);
+		};
+
+		toggle.addEventListener("click", () => {
+			setOpen(!nav.classList.contains("is-open"));
+		});
+
+		nav.querySelectorAll(".site-nav__links a").forEach((link) => {
+			link.addEventListener("click", () => setOpen(false));
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && nav.classList.contains("is-open")) setOpen(false);
 		});
 	}
 </script>
