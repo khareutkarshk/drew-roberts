@@ -57,7 +57,8 @@
 .chapter-gate {
 	position: relative;
 	z-index: 3;
-	height: 100svh;
+	height: 100vh;
+	height: 100lvh;
 	overflow: hidden;
 	pointer-events: none;
 	--gate-band: var(--accent);
@@ -139,8 +140,11 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 1rem;
-	min-height: clamp(4rem, 13vh, 7rem);
+	min-height: clamp(4rem, 13svh, 7rem);
 	padding: 0 var(--pad-x);
+	/* Mobile browser toolbars cover the bottom of an lvh-tall gate; keep band text above them. */
+	padding-bottom: max(0px, calc(100lvh - 100svh));
+	box-sizing: content-box;
 	color: var(--gate-band-ink);
 	background: var(--gate-band);
 }

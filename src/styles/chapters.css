@@ -311,6 +311,8 @@
 [data-chapter="about"] .chain {
 	grid-template-columns: repeat(5, minmax(0, 1fr));
 	max-width: none;
+	padding: 0;
+	list-style: none;
 	border-top: 1px solid var(--line);
 	border-bottom: 1px solid var(--line);
 }
@@ -631,17 +633,20 @@
 
 	[data-chapter="about"] .chain {
 		grid-template-columns: 1fr;
+		width: calc(100% + 2 * var(--pad-x));
+		margin-inline: calc(var(--pad-x) * -1);
 	}
 
 	[data-chapter="about"] .chain__item {
-		grid-template-columns: 4.5rem minmax(0, 1fr);
-		gap: 1.25rem;
+		grid-template-columns: 2.75rem minmax(0, 1fr);
+		gap: 0.85rem;
+		padding: 1.25rem var(--pad-x);
 		border-right: 0;
 		border-bottom: 1px solid var(--line);
 	}
 
 	[data-chapter="about"] .chain__step {
-		font-size: 2.5rem;
+		font-size: 2rem;
 	}
 
 	[data-chapter="contact"] .contact-hero {
@@ -674,12 +679,13 @@
 	}
 
 	[data-chapter="about"] .chain__item {
-		grid-template-columns: 3.25rem minmax(0, 1fr);
-		padding-inline: 0.25rem;
+		grid-template-columns: 2.4rem minmax(0, 1fr);
+		gap: 0.7rem;
+		padding: 1.15rem 0.85rem;
 	}
 
 	[data-chapter="about"] .chain__step {
-		font-size: 2rem;
+		font-size: 1.7rem;
 	}
 
 	[data-chapter="contact"] .signal-stage {

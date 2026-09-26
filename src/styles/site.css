@@ -1401,6 +1401,8 @@ img {
 	display: grid;
 	gap: 0;
 	max-width: 40rem;
+	padding: 0;
+	list-style: none;
 }
 
 .chain__item {
