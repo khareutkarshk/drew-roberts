@@ -19,8 +19,10 @@ const seals = [
 	<div class="contact-hero__copy">
 		<a class="contact-hero__email" href={cta.bookHref}>
 			<span class="contact-hero__email-label">Write first</span>
-			<span class="contact-hero__email-value">{brand.email}</span>
-			<span class="contact-hero__email-arrow" aria-hidden="true">↗</span>
+			<span class="contact-hero__email-row">
+				<span class="contact-hero__email-value">{brand.email}</span>
+				<span class="contact-hero__email-arrow" aria-hidden="true">↗</span>
+			</span>
 		</a>
 		<p class="archive__lede contact-hero__lede">
 			{voice.bioShort} {brand.availability} — start with a call, or reach out on the public channels

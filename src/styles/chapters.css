@@ -430,10 +430,11 @@
 .contact-hero__title {
 	max-width: none;
 	margin: 0;
-	font-size: clamp(3.4rem, 14.5vw, 14rem);
+	font-size: clamp(2.5rem, 7.2vw, 6.5rem);
 	font-weight: 800;
-	line-height: 0.8;
-	letter-spacing: -0.055em;
+	line-height: 0.9;
+	letter-spacing: -0.05em;
+	white-space: nowrap;
 }
 
 .contact-hero__email {
@@ -441,7 +442,7 @@
 	display: grid;
 	gap: 0.75rem;
 	margin-bottom: 1.75rem;
-	padding: 0 3rem 1.1rem 0;
+	padding: 0 0 1.1rem;
 	color: var(--ink);
 	text-decoration: none;
 	border-bottom: 1px solid var(--line);
@@ -477,20 +478,26 @@
 	color: var(--accent);
 }
 
+.contact-hero__email-row {
+	display: flex;
+	align-items: baseline;
+	gap: 0.55rem;
+	min-width: 0;
+}
+
 .contact-hero__email-value {
+	min-width: 0;
 	font-family: var(--font-display);
-	font-size: clamp(1.45rem, 4.1vw, 3.75rem);
+	font-size: clamp(1.2rem, 3vw, 2.6rem);
 	font-weight: 700;
 	line-height: 1;
 	letter-spacing: -0.035em;
-	overflow-wrap: anywhere;
+	white-space: nowrap;
 }
 
 .contact-hero__email-arrow {
-	position: absolute;
-	right: 0;
-	bottom: 1.1rem;
-	font-size: clamp(1.5rem, 3vw, 2.75rem);
+	flex: none;
+	font-size: clamp(1.25rem, 2.4vw, 2rem);
 	line-height: 1;
 	color: var(--accent);
 	transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
@@ -524,13 +531,13 @@
 
 [data-chapter="contact"] .contact-list__value {
 	font-family: var(--font-display);
-	font-size: clamp(1.2rem, 3.1vw, 2.6rem);
+	font-size: clamp(1.05rem, 2.4vw, 2rem);
 	font-weight: 700;
 	letter-spacing: -0.025em;
 	line-height: 1;
 	text-align: right;
 	text-transform: none;
-	overflow-wrap: anywhere;
+	white-space: nowrap;
 }
 
 [data-chapter="contact"] .contact-list__primary,
@@ -689,10 +696,20 @@
 
 	[data-chapter="contact"] .contact-list__value {
 		text-align: left;
+		white-space: normal;
+		overflow-wrap: break-word;
 	}
 
 	[data-chapter="contact"] .contact-note {
 		grid-template-columns: 1fr;
 		gap: 0.6rem;
+	}
+
+	.contact-hero__title {
+		font-size: clamp(2.35rem, 11.5vw, 3.4rem);
+	}
+
+	.contact-hero__email-value {
+		font-size: clamp(1.1rem, 5.2vw, 1.45rem);
 	}
 }

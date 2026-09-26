@@ -234,7 +234,9 @@ export class PhysicsAccent {
 		});
 		Composite.add(world, this.bodies);
 
-		const interactive = this.mode === "nudge" || this.mode === "tip" || this.mode === "play";
+		// Touch devices keep native page scroll over the arena; drag is mouse-only.
+		const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+		const interactive = finePointer && (this.mode === "nudge" || this.mode === "tip" || this.mode === "play");
 		if (interactive) {
 			this.options.root.dataset.interactive = "true";
 			const mouse = Mouse.create(this.options.root);

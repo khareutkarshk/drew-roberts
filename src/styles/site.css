@@ -936,12 +936,17 @@ img {
 	background: #10100c;
 	border: 1px solid rgba(241, 240, 232, 0.1);
 	border-radius: 2px;
-	touch-action: none;
-	cursor: grab;
+	touch-action: pan-y;
 }
 
-.chain-bench:active {
-	cursor: grabbing;
+@media (hover: hover) and (pointer: fine) {
+	.chain-bench {
+		cursor: grab;
+	}
+
+	.chain-bench:active {
+		cursor: grabbing;
+	}
 }
 
 .chain-bench__rail {

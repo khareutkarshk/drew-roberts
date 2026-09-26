@@ -103,22 +103,28 @@ function setupGate(gate: HTMLElement): void {
 		.fromTo(index ?? [], { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5 }, 0.4)
 		.fromTo(band ?? [], { yPercent: 100 }, { yPercent: 0, duration: 0.5, ease: "power2.out" }, 0.5);
 
+	// Pin ends before the next chapter reaches the top of the screen: once the
+	// card is fully gone the chapter top still sits ~12% down, so its heading
+	// lands well clear of the nav. The tear is long and eased so it settles smoothly.
 	gsap
 		.timeline({
 			defaults: { ease: "none" },
 			scrollTrigger: {
 				trigger: gate,
 				start: "top top",
-				end: "+=100%",
+				end: "+=88%",
 				pin: true,
 				pinSpacing: false,
-				scrub: 0.6,
+				scrub: 0.8,
+				anticipatePin: 1,
 			},
 		})
-		.to({}, { duration: 0.3 })
-		.to(panel, { clipPath: "inset(0% 100% 0% 0%)", duration: 0.7, ease: "power2.inOut" })
-		.to(title, { xPercent: -45, skewX: 8, duration: 0.7, ease: "power2.in" }, "<")
-		.to(mark ?? [], { xPercent: -30, duration: 0.7 }, "<");
+		.to(title, { scale: 1.05, transformOrigin: "left bottom", duration: 0.55 }, 0)
+		.to(mark ?? [], { xPercent: -16, duration: 0.55 }, 0)
+		.to(panel, { clipPath: "inset(0% 100% 0% 0%)", duration: 0.45, ease: "power2.inOut" }, 0.55)
+		.to(title, { xPercent: -55, skewX: 10, scale: 1, duration: 0.45, ease: "power2.in" }, 0.55)
+		.to(band ?? [], { yPercent: 110, duration: 0.3, ease: "power2.in" }, 0.6)
+		.to([index, mark].filter(Boolean), { opacity: 0, x: -60, duration: 0.25 }, 0.55);
 }
 
 /** Chapter header: eyebrow slides, title unmasks upward, stage wipes in. */
@@ -135,7 +141,8 @@ function setupChapterReveal(chapter: HTMLElement): void {
 		defaults: { ease: "power3.out" },
 		scrollTrigger: {
 			trigger: chapter,
-			start: "top 78%",
+			// Plays as the card begins tearing away, so the heading animates into view.
+			start: "top 50%",
 			toggleActions: "play none none reverse",
 		},
 	});

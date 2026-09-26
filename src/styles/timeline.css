@@ -35,6 +35,10 @@
 	will-change: transform, opacity, filter;
 }
 
+.chapter__archive .archive__main {
+	padding-top: calc(var(--nav-h) + clamp(2.5rem, 7vh, 4.5rem));
+}
+
 .timeline > .site-nav--overlay,
 .timeline > .site-nav--overlay a,
 .timeline > .site-nav--overlay button {
