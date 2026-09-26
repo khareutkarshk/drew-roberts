@@ -1,0 +1,22 @@
+:root {
+	--bg: #0b0b09;
+	--ink: #f1f0e8;
+	--muted: #77756c;
+	--accent: #b7ff3c;
+	--accent-dim: rgba(183, 255, 60, 0.55);
+	--accent-soft: rgba(183, 255, 60, 0.12);
+	--accent-ink: #0b0b09;
+	--line: rgba(241, 240, 232, 0.14);
+	--metal: #1a1a15;
+	--paper: #e8e5d8;
+
+	--font-display: "Bricolage Grotesque", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	--font-sans: "Archivo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	--font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	--pad-x: clamp(1.1rem, 2.6vw, 2.25rem);
+	--pad-y: clamp(1rem, 2.2vw, 1.9rem);
+	--max: 72rem;
+
+	--nav-h: 3.5rem;
+}

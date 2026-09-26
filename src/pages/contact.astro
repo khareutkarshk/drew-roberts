@@ -1,0 +1,153 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { brand, channels, cta, guides, voice } from "../data/site";
+
+const seals = [
+	{ id: "gh", label: "GH", tone: "light" },
+	{ id: "x", label: "X", tone: null },
+	{ id: "mail", label: "@", tone: null },
+	{ id: "in", label: "in", tone: null },
+	{ id: "eth", label: ".eth", tone: "accent" },
+];
+---
+
+<Layout
+	title="Contact"
+	description={`${brand.availability}. Book a call with ${brand.name} — ${brand.tagline} at ${brand.studio}.`}
+>
+	<header class="contact-hero">
+		<div class="contact-hero__copy">
+			<p class="archive__eyebrow"><span class="archive__mark" aria-hidden="true"></span>Archive / Contact</p>
+			<h1 class="archive__title">Book a call</h1>
+			<p class="archive__lede contact-hero__lede">
+				{voice.bioShort} {brand.availability} — start with a call, or reach out on the public channels
+				below.
+			</p>
+			<p class="contact-hero__hint">
+				<a class="contact-hero__cta" href={cta.bookHref}>{cta.bookLabel}</a>
+			</p>
+		</div>
+
+		<div
+			class="signal-stage"
+			data-accent
+			data-accent-mode="signal"
+			aria-label="Drew Coin and public channel seals settling on a signal desk"
+		>
+			<div class="signal-stage__chrome" aria-hidden="true">
+				<span>Signal desk</span>
+				<span>Open line</span>
+			</div>
+
+			<div class="signal-stage__field" aria-hidden="true">
+				<span class="signal-ring signal-ring--outer"></span>
+				<span class="signal-ring signal-ring--mid"></span>
+				<span class="signal-ring signal-ring--inner"></span>
+				<span class="signal-cross"></span>
+				<span class="signal-dock"></span>
+				<span class="signal-meta signal-meta--left">DR · Bench</span>
+				<span class="signal-meta signal-meta--right">Available</span>
+			</div>
+
+			<div class="accent-body signal-coin" data-accent-body="coin">
+				<img src="/coin/front.png" alt="" width="72" height="72" />
+			</div>
+			{
+				seals.map((seal) => (
+					<div
+						class:list={[
+							"accent-body",
+							"signal-seal",
+							seal.tone === "accent" && "signal-seal--accent",
+							seal.tone === "light" && "signal-seal--light",
+						]}
+						data-accent-body={seal.id}
+					>
+						{seal.label}
+					</div>
+				))
+			}
+
+			<div class="signal-stage__floor" aria-hidden="true">
+				<span>{brand.availability}</span>
+			</div>
+		</div>
+	</header>
+
+	<div class="archive__rule"></div>
+
+	<div class="contact-grid">
+		<ul class="contact-list">
+			{
+				channels.map((item) => (
+					<li>
+						{item.href ? (
+							<a
+								class:list={{ "contact-list__primary": item.primary }}
+								href={item.href}
+								target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+								rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+							>
+								<span class="contact-list__label">{item.label}</span>
+								<span class="contact-list__value">
+									{item.value}
+									{!item.href.startsWith("mailto:") && <span aria-hidden="true"> ↗</span>}
+								</span>
+							</a>
+						) : (
+							<span class="contact-list__static">
+								<span class="contact-list__label">{item.label}</span>
+								<span class="contact-list__value">{item.value}</span>
+							</span>
+						)}
+					</li>
+				))
+			}
+		</ul>
+
+		<aside class="contact-note" aria-label="Engagement note">
+			<p class="contact-note__kicker">Status</p>
+			<p class="contact-note__body">{brand.availability}. Prefer email to start — we can move to a call from there.</p>
+			<a class="contact-note__link" href={cta.bookHref}>
+				{cta.bookLabel} <span aria-hidden="true">↗</span>
+			</a>
+		</aside>
+	</div>
+
+	<section class="guides guides--contact" aria-labelledby="contact-guides-title">
+		<div class="guides__head">
+			<p class="archive__eyebrow"><span class="archive__mark" aria-hidden="true"></span>Before we start</p>
+			<h2 class="guides__title" id="contact-guides-title">Guides</h2>
+		</div>
+		<div class="guides__grid">
+			{
+				guides.map((guide) => (
+					<article class="guide">
+						<p class="guide__for">{guide.for}</p>
+						<h3 class="guide__name">{guide.title}</h3>
+						<p class="guide__blurb">{guide.blurb}</p>
+						<ul class="guide__points">
+							{guide.points.map((point) => (
+								<li>{point}</li>
+							))}
+						</ul>
+					</article>
+				))
+			}
+		</div>
+	</section>
+</Layout>
+
+<script>
+	import { mountAccent } from "../scripts/physics/accent";
+
+	const root = document.querySelector<HTMLElement>("[data-accent]");
+	if (root) {
+		const accent = mountAccent({
+			root,
+			mode: "signal",
+			delay: 180,
+		});
+		document.addEventListener("astro:before-swap", () => accent.destroy(), { once: true });
+	}
+</script>

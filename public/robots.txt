@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Prefer sitemap for discovery
+Sitemap: https://drewroberts.com/sitemap-index.xml

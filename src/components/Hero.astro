@@ -1,0 +1,216 @@
+---
+import "../styles/hero.css";
+import { brand, voice, cta, engagement } from "../data/site";
+
+const slabs = [
+	{ word: "Build", index: "01" },
+	{ word: "Ship", index: "02", accent: true },
+	{ word: "Break", index: "03", breakable: true },
+	{ word: "Repeat", index: "04" },
+];
+
+// `wide` tags only appear when there is floor space for them
+const tags = [
+	{ label: "Laravel", wide: true },
+	{ label: "Solidity" },
+	{ label: "PHP", wide: true },
+	{ label: "ERC-20", wide: true },
+	{ label: "Vue", wide: true },
+	{ label: "Open Source", tone: "light" },
+	{ label: "Tailwind", wide: true },
+	{ label: "EVM", wide: true },
+];
+
+const links = [
+	{ label: "GitHub", href: "https://github.com/drewroberts" },
+	{ label: "X", href: "https://x.com/dr3wroberts" },
+	{ label: "LinkedIn", href: "https://www.linkedin.com/in/drewroberts" },
+	{ label: cta.bookLabel, href: cta.bookHref, primary: true },
+];
+---
+
+<section class="hero" id="hero" aria-labelledby="hero-title">
+	<h1 class="hero__sr-only" id="hero-title">{brand.name} — {brand.tagline}</h1>
+	<div class="hero__sr-only">
+		<p>
+			{brand.name} is a {brand.tagline.toLowerCase()} based in {brand.base}. {voice.bio} Studio:{" "}
+			{brand.studio}. Public Ethereum identity: {brand.ens}. {brand.availability}.
+		</p>
+		<p>
+			The hero is an interactive bench of objects: the Drew Coin, type blocks reading Build, Ship,
+			Break, Repeat, and stamped tags. They can be dragged and thrown.
+		</p>
+	</div>
+
+	<div class="hero__stage" data-stage>
+		<svg class="hero__rope" aria-hidden="true" width="100%" height="100%">
+			<line data-rope x1="0" y1="0" x2="0" y2="0"></line>
+		</svg>
+
+		<div class="hero__shadow" aria-hidden="true">
+			<img src="/coin/shadow.png" alt="" draggable="false" />
+		</div>
+
+		<div class="hero__objects" data-objects aria-hidden="true">
+			{
+				slabs.map((slab) => (
+					<div
+						class:list={["artifact", "slab", { "slab--accent": slab.accent }]}
+						data-artifact="slab"
+						data-label={`slab-${slab.word.toLowerCase()}`}
+						data-breakable={slab.breakable ? "" : undefined}
+					>
+						<span class="slab__word">{slab.word}</span>
+						<span class="slab__index">{slab.index}/04</span>
+					</div>
+				))
+			}
+
+			{
+				tags.map((tag) => (
+					<div
+						class:list={["artifact", "tag", tag.tone && `tag--${tag.tone}`]}
+						data-artifact="tag"
+						data-label={`tag-${tag.label.toLowerCase()}`}
+						data-wide={tag.wide ? "" : undefined}
+					>
+						<span class="tag__hole" />
+						{tag.label}
+					</div>
+				))
+			}
+
+			<div class="artifact tag tag--repo" data-artifact="tag" data-label="tag-repo" data-wide>
+				<span class="tag__hole"></span>
+				<span class="tag__dim">gh/roberts/</span>web3-laravel
+			</div>
+
+			<div class="artifact ticket" data-artifact="ticket" data-label="ticket">
+				<div class="ticket__main">
+					<span class="ticket__kicker">Co-founder · Media</span>
+					<span class="ticket__title">Saturday Down South</span>
+				</div>
+				<div class="ticket__stub"><span>SEC</span></div>
+			</div>
+
+			<div class="artifact ens" data-hanger>
+				<span class="ens__eyelet"></span>
+				<span class="ens__label">Ξ ENS</span>
+				<span class="ens__name">{brand.ens}</span>
+			</div>
+		</div>
+
+		<div class="hero__coin-layer" data-coin-layer>
+			<div class="hero__coin" data-face="front">
+				<img
+					class="hero__coin-face"
+					src="/coin/front.png"
+					alt="Drew Coin, front"
+					draggable="false"
+					width="512"
+					height="512"
+					fetchpriority="high"
+				/>
+				<img
+					class="hero__coin-edge"
+					src="/coin/edge.png"
+					alt=""
+					draggable="false"
+					width="512"
+					height="512"
+					aria-hidden="true"
+				/>
+				<div class="hero__highlight" aria-hidden="true">
+					<img src="/coin/highlight.png" alt="" draggable="false" width="512" height="512" />
+				</div>
+			</div>
+		</div>
+
+		<div class="hero__dust" aria-hidden="true"></div>
+	</div>
+
+	<div class="hero__chrome">
+		<header class="hero__top">
+			<div class="hero__lead">
+				<p class="hero__brand-spacer" aria-hidden="true"></p>
+
+				<div class="hero__brief">
+					<p class="hero__brief-title">Open for</p>
+					<ol class="hero__brief-list">
+						{
+							engagement.map((item) => (
+								<li>
+									<span class="hero__brief-n">{item.n}</span>
+									<span class="hero__brief-name">{item.name}</span>
+									<span class="hero__brief-note">{item.note}</span>
+								</li>
+							))
+						}
+					</ol>
+				</div>
+			</div>
+
+			<div class="hero__meta">
+				<p class="hero__availability">{brand.availability}</p>
+				<nav class="hero__links" aria-label="Elsewhere">
+					{
+						links.map((link) => (
+							<a
+								class:list={{ "hero__link--primary": link.primary }}
+								href={link.href}
+								target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+								rel={link.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+							>
+								{link.label}
+								{!link.href.startsWith("mailto:") && <span aria-hidden="true">↗</span>}
+							</a>
+						))
+					}
+				</nav>
+			</div>
+		</header>
+
+		<div class="hero__bench" aria-hidden="true">
+			<span class="hero__bench-label">Archive — DR/001</span>
+			<span class="hero__bench-label hero__bench-label--end">Scale 1:1</span>
+		</div>
+
+		<footer class="hero__bottom">
+			<p class="hero__tagline">{brand.tagline.split(" ")[0]}<br />{brand.tagline.split(" ")[1]}</p>
+
+			<div class="hero__bottom-aside">
+				<p class="hero__archive">{voice.bioShort}</p>
+
+				<p class="hero__mobile-meta">
+					{brand.tagline}<br />
+					{brand.availability}
+				</p>
+
+				<div class="hero__instruction" data-phase="idle">
+					<p class="hero__instruction-text" aria-live="polite">
+						<span class="hero__instruction-primary"></span>
+						<span class="hero__instruction-secondary"></span>
+					</p>
+					<p class="hero__cycle" data-cycle hidden>
+						<span>Build · Ship · Break ·</span>
+						<button type="button" data-repeat aria-label="Repeat: put every object back on the bench">
+							Repeat ↺
+						</button>
+					</p>
+				</div>
+			</div>
+		</footer>
+	</div>
+
+	<div class="hero__grain" aria-hidden="true"></div>
+</section>
+
+<script>
+	import { mountHero } from "../scripts/hero/world";
+
+	const hero = document.getElementById("hero");
+	if (hero) {
+		const world = mountHero(hero);
+		document.addEventListener("astro:before-swap", () => world.destroy(), { once: true });
+	}
+</script>

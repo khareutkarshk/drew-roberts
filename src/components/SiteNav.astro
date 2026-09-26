@@ -1,0 +1,53 @@
+---
+interface Props {
+	overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+
+const links = [
+	{ href: "/work", label: "Work" },
+	{ href: "/media", label: "Media" },
+	{ href: "/about", label: "About" },
+	{ href: "/contact", label: "Contact" },
+];
+---
+
+<nav class:list={["site-nav", { "site-nav--overlay": overlay }]} aria-label="Primary">
+	<a class="site-nav__brand" href="/">Drew Roberts</a>
+
+	<button
+		type="button"
+		class="site-nav__toggle"
+		aria-expanded="false"
+		aria-controls="site-nav-links"
+		data-nav-toggle
+	>
+		Menu
+	</button>
+
+	<ul class="site-nav__links" id="site-nav-links">
+		{
+			links.map((link) => (
+				<li>
+					<a href={link.href} aria-current={path === link.href ? "page" : undefined}>
+						{link.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<script>
+	const nav = document.querySelector(".site-nav");
+	const toggle = document.querySelector("[data-nav-toggle]");
+	if (nav && toggle instanceof HTMLButtonElement) {
+		toggle.addEventListener("click", () => {
+			const open = nav.classList.toggle("is-open");
+			toggle.setAttribute("aria-expanded", String(open));
+			toggle.textContent = open ? "Close" : "Menu";
+		});
+	}
+</script>

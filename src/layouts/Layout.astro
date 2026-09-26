@@ -1,23 +1,181 @@
+---
+import "../styles/site.css";
+import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import { brand, seo, voice } from "../data/site";
+
+interface Props {
+	title?: string;
+	description?: string;
+	home?: boolean;
+	/** Override Open Graph type; defaults to website */
+	ogType?: "website" | "profile";
+	/** Optional path-relative image override */
+	image?: string;
+	noindex?: boolean;
+}
+
+const {
+	title = seo.titleDefault,
+	description = seo.descriptionDefault,
+	home = false,
+	ogType = "website",
+	image = seo.ogImage,
+	noindex = false,
+} = Astro.props;
+
+const fullTitle =
+	title === brand.name || title === seo.titleDefault
+		? seo.titleDefault
+		: `${title} — ${brand.name}`;
+
+const canonicalURL = new URL(Astro.url.pathname, brand.siteUrl);
+canonicalURL.hash = "";
+if (canonicalURL.pathname.length > 1 && canonicalURL.pathname.endsWith("/")) {
+	canonicalURL.pathname = canonicalURL.pathname.slice(0, -1);
+}
+
+const ogImageURL = new URL(image, brand.siteUrl).href;
+const profileImageURL = new URL(seo.profileImage, brand.siteUrl).href;
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@graph": [
+		{
+			"@type": "WebSite",
+			"@id": `${brand.siteUrl}/#website`,
+			url: brand.siteUrl,
+			name: brand.name,
+			description: seo.descriptionDefault,
+			publisher: { "@id": `${brand.siteUrl}/#person` },
+			inLanguage: "en-US",
+		},
+		{
+			"@type": "Person",
+			"@id": `${brand.siteUrl}/#person`,
+			name: brand.name,
+			url: brand.siteUrl,
+			image: profileImageURL,
+			email: brand.email,
+			jobTitle: brand.tagline,
+			description: voice.bio,
+			worksFor: {
+				"@type": "Organization",
+				name: brand.studio,
+				url: brand.siteUrl,
+			},
+			address: {
+				"@type": "PostalAddress",
+				addressLocality: "Orlando",
+				addressRegion: "FL",
+				addressCountry: "US",
+			},
+			sameAs: [
+				"https://github.com/drewroberts",
+				"https://x.com/dr3wroberts",
+				"https://www.linkedin.com/in/drewroberts",
+			],
+			knowsAbout: [
+				"Laravel",
+				"PHP",
+				"Vue",
+				"React",
+				"Solidity",
+				"Ethereum",
+				"Growth marketing",
+				"Product development",
+			],
+		},
+		{
+			"@type": "WebPage",
+			"@id": `${canonicalURL.href}#webpage`,
+			url: canonicalURL.href,
+			name: fullTitle,
+			description,
+			isPartOf: { "@id": `${brand.siteUrl}/#website` },
+			about: { "@id": `${brand.siteUrl}/#person` },
+			inLanguage: "en-US",
+		},
+	],
+};
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="dark" />
+		<meta name="theme-color" content="#0B0B09" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={seo.keywords.join(", ")} />
+		<meta name="author" content={brand.name} />
+		<meta
+			name="robots"
+			content={noindex ? "noindex, nofollow" : "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"}
+		/>
+		<meta name="googlebot" content={noindex ? "noindex, nofollow" : "index, follow"} />
+		<link rel="canonical" href={canonicalURL.href} />
+
+		{/* Icons — photo-based */}
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+		<link rel="manifest" href="/site.webmanifest" />
+
+		{/* Open Graph */}
+		<meta property="og:type" content={ogType} />
+		<meta property="og:site_name" content={brand.name} />
+		<meta property="og:locale" content={brand.locale} />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonicalURL.href} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:secure_url" content={ogImageURL} />
+		<meta property="og:image:type" content="image/jpeg" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={`${brand.name} — ${brand.tagline}`} />
+		{ogType === "profile" && <meta property="profile:first_name" content="Drew" />}
+		{ogType === "profile" && <meta property="profile:last_name" content="Roberts" />}
+		{ogType === "profile" && <meta property="profile:username" content="drewroberts" />}
+
+		{/* Twitter / X */}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:site" content={seo.twitter} />
+		<meta name="twitter:creator" content={seo.twitter} />
+		<meta name="twitter:title" content={fullTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
+		<meta name="twitter:image:alt" content={`${brand.name} — ${brand.tagline}`} />
+
+		{/* Performance */}
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+			rel="stylesheet"
+		/>
+
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
-	<body>
-		<slot />
+	<body class:list={[{ "is-home": home }]}>
+		{
+			home ? (
+				<slot />
+			) : (
+				<div class="archive">
+					<SiteNav />
+					<main class="archive__main">
+						<slot />
+					</main>
+					<SiteFooter />
+				</div>
+			)
+		}
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

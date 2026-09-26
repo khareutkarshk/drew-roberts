@@ -1,0 +1,30 @@
+---
+import { brand, cta } from "../data/site";
+
+const links = [
+	{ label: "GitHub", href: "https://github.com/drewroberts" },
+	{ label: "X", href: "https://x.com/dr3wroberts" },
+	{ label: "LinkedIn", href: "https://www.linkedin.com/in/drewroberts" },
+	{ label: cta.bookLabel, href: cta.bookHref },
+];
+---
+
+<footer class="site-footer">
+	<div class="site-footer__inner">
+		<p>{brand.base} · {brand.tagline} · {brand.availability}</p>
+		<nav class="site-footer__links" aria-label="Elsewhere">
+			{
+				links.map((link) => (
+					<a
+						href={link.href}
+						target={link.href.startsWith("mailto:") ? undefined : "_blank"}
+						rel={link.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+					>
+						{link.label}
+						{!link.href.startsWith("mailto:") && <span aria-hidden="true"> ↗</span>}
+					</a>
+				))
+			}
+		</nav>
+	</div>
+</footer>
